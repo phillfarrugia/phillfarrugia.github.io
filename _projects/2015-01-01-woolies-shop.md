@@ -1,6 +1,6 @@
 ---
 title: 'Woolies Shop'
-subtitle: 'Shopping List & Groceries eCommerce Platform'
+subtitle: 'Shopping List & Groceries eCommerce Platform <br>2015-2016'
 date: 2018-06-30 00:00:00
 description: This page is a demo that shows everything you can do inside portfolio and blog posts.
 featured_image: '/images/woolies-shop.png'
@@ -8,95 +8,61 @@ featured_image: '/images/woolies-shop.png'
 
 ![](/images/woolies-shop.png)
 
-http://lukedurrant.com/#/portfolio/woolworths-supermarket-shop/
+<center><a href="https://www.woolworths.com.au/" class="button button--large">Woolies Shop Web</a> <a href="https://apps.apple.com/au/app/woolworths/id975089690" class="button button--large">Woolies Shop iOS</a> <a href="https://play.google.com/store/apps/details?id=com.woolworths" class="button button--large">Woolies Shop Android</a></center>
 
-## Demo content
+## Create Shopping Lists, Browse Products and View Recipes with Woolies Shop
 
-This page is a demo that shows everything you can do inside portfolio and blog posts.
+Before Amazon brought on the rise of Digital Commerce, Australia's largest national Supermarket [Woolworths](https://www.woolworths.com.au/) invested in building out a digital platform enabling customers to browse and purchase their groceries online. 
 
-We've included everything you need to create engaging posts about your work, and show off your case studies in a beautiful way.
+During my time at [Bilue](https://bilue.com.au/), I was a core member of a team of 5 Engineers tasked with building out the iOS application. We worked with design firm [Neotony](http://neoteny.com.au/) as well as in-house Designers, Product Managers, Backend, QA and Web Engineers to build a powerful, user-friendly solution that became Australia's leading online shopping service.
 
-**Obviously,** we’ve styled up *all the basic* text formatting options [available in markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+As a Software Engineer on the iOS team, I was responsible for implementing user-facing features such as Shopping Lists, Online/Offline Sync, Recipes and one of [Australia's first Apple Watch apps](https://www.smh.com.au/technology/woolworths-unveils-apple-watch-app-20150402-1md9ms.html). I contributed to the team's Continuous Integration pipeline where I wrote custom build scripts to compile the project, run Unit Tests ([Quick and Nimble](https://github.com/Quick/Quick)) and code sign the IPA to be deployed to the App Store. 
 
-You can create lists:
+### App Architecture
 
-* Simple bulleted lists
-* Like this one
-* Are cool
+Our application was entirely Objective-C, used an event driven [MVVM](https://www.objc.io/issues/13-architecture/mvvm/) (Model, View, ViewModel) architecture, handled data flow using [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa) and stored data on-device in a [Core Data database](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html). We used Git as Version Control, wrote Behavioural Driven Unit Tests ([BDD](https://github.com/Quick/Quick)) and defined all AutoLayout constraints programmatically.
 
-And:
+### Features
 
-1. Numbered lists
-2. Like this other one
-3. Are great too
+![](/images/woolies-features.png){:height="600" width="1200"}
 
-You can also add blockquotes, which are shown at a larger width to help break up the layout and draw attention to key parts of your content:
+#### Shopping Lists
 
-> “Simple can be harder than complex: You have to work hard to get your thinking clean to make it simple. But it’s worth it in the end because once you get there, you can move mountains.”
+I worked on the implementation of the Lists feature which enabled users to create Shopping Lists. Users could add Free Text items (such as "Milk", "Sugar", "Coffee") and Product-based items which linked to real, purchaseable products. List items were queried, updated and saved to an NSManagedObjectContext which persisted to disk in an NSPersistentStore using [Core Data](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/index.html).
 
-The theme also supports markdown tables:
+#### Online/Offline Sync
 
-| Item                 | Author        | Supports tables? | Price |
-|----------------------|---------------|------------------|-------|
-| Duet Jekyll Theme    | Jekyll Themes | Yes              | $39   |
-| Index Jekyll Theme   | Jekyll Themes | Yes              | $39   |
-| Journal Jekyll Theme | Jekyll Themes | Yes              | $39   |
+![](/images/woolies-shop-diagram.jpg){:height="600" width="1200"}
 
-You can throw in some horizontal rules too:
+Users were able to add, update and remove products from their lists while offline. I worked closely with the Backend Engineers to architect, and implement an Online/Offline Sync solution which had to deal with conflict resolution in a simple, and user friendly manner. We were required to rely on the server to be the source of truth for conflict resolution, and to never require the user to select from two conflicting changes. Sync was designed to be a UI blocking action, and was not required to stay continously up-to-date in the background.
 
----
+In our solution, each List owned a `lastSyncedTimestamp` which was an Epoch timestamp representing the last time the list was synced with the server. A `WOWMasterListSyncManager` mapped each list to a `WOWListSyncManager` which wrapped a `WOWListModel` and synced it with the server. A full-sync required sending each List and its timestamp to the server. In the response, was the Additions, Updates, and Deletions of the items within the list since the last sync. The `lastSyncedTimestamp` was updated upon each sync. 
 
-### Image galleries
+#### Recipes
 
-Here's a really neat custom feature we added – galleries:
+I was also responsible for building the Recipes feature within the app, which allowed Users to view a curated list of Featured and Sponsored Recipes. Recipes were fetched from the Server and displayed in a `WOWRecipesViewController` which supported sorting alphabetically in Ascending or Descending order. Each `WOWRecipeDetailViewController` featured a large full-bleed high resolution feature image, a table of ingredients and a plain text method of cooking. In order to provide a seamless user experience despite having to load large high resolution images, I designed and implemented a solution which displayed a blurred placeholder thumbnail image, which animated into the high resolution image once fetching was complete.
 
-<div class="gallery" data-columns="3">
-	<img src="/images/demo/demo-portrait.jpg">
-	<img src="/images/demo/demo-landscape.jpg">
-	<img src="/images/demo/demo-square.jpg">
-	<img src="/images/demo/demo-landscape-2.jpg">
-</div>
+Since the number of ingredients, and the method information was dynamic based upon the recipe - I was required to use dynamic manipulation of a combination of AutoLayout constraints, Frames/Bounds, and CALayers to size and fit the recipe information into the available screen space. This meant that we were able to deliver the user a completely tailored user experience that felt very luxe and high end but was unique to each individual recipe.
 
-Inspired by the Galleries feature from WordPress, we've made it easy to create grid layouts for your images. Just use a bit of simple HTML in your post to create a masonry grid image layout:
+#### Apple Watch
 
-```html
-<div class="gallery" data-columns="3">
-    <img src="/images/demo/demo-portrait.jpg">
-    <img src="/images/demo/demo-landscape.jpg">
-    <img src="/images/demo/demo-square.jpg">
-    <img src="/images/demo/demo-landscape-2.jpg">
-</div>
-```
+![](http://www.executivestyle.com.au/content/dam/images/1/m/d/s/c/j/image.related.articleLeadwide.620x349.1md9ms.png/1427956282544.jpg)
 
-*See what we did there? Code and syntax highlighting is built-in too!*
+During the initial launch of the Apple Watch, I led the development of one of the first Apple Watch apps available in Australia. This involved working closely with Apple using the initial implementations of what would later become the WatchKit SDK. At the time, data was shared between the Apple Watch and the iPhone using dynamic messaging, and then eventually shared App Containers. I modified the app's CoreData stack to share an NSPersistentStore within a shared App Container allowing both the Apple Watch and the iPhone applications to remain in sync. As users added items to their Shopping Lists from their phone, they could quickly check the items off the list from their watch in store.
 
-Change the number inside the 'columns' setting to create different types of gallery for all kinds of purposes. You can even click on each image to seamlessly enlarge it on the page.
+I worked with an early version of MapKit for watchOS that enabled displaying a WKMapView and marking certain latitude and longitude coordinates on the map. This allowed users to see nearby stores from their wrist, and to get walking/driving directions to their nearest Woolworths store.
 
----
+### Continuous Integration
 
-### Image carousels
+![](/images/woolies-ci.png){:height="600" width="800"}
 
-Here's another gallery with only one column, which creates a carousel slide-show instead.
+Our team adopted a continuous delivery approach to the release cycle which enabled us to consistently deliver features and bug fixes to the client on a daily basis. This meant that we needed a comprehensive set of build scripts which automated the process of executing unit tests, generating an IPA and uploading the IPA to HockeyApp. I maintained the release process, managing a fleet of CI machines across several projects and ensured that environment issues were resolved quickly so that clients received their builds each day.
 
-A nice little feature: the carousel only advances when it is in view, so your visitors won't scroll down to find it half way through your images.
+I wrote seperate Bash scripts for each step of the build pipeline - configuring environment variables, updating dependencies, installing dependencies, executing unit tests, executing UI tests, compiling the project, codesigning, generating an IPA and deploying the IPA to HockeyApp/Testflight. I learnt about the contents of an IPA file, how a binary is code signed and can be re-signed, and the importance of delivering builds to clients on a consistent and regular basis.
 
-<div class="gallery" data-columns="1">
-	<img src="/images/demo/demo-landscape.jpg">
-	<img src="/images/demo/demo-landscape-2.jpg">
-</div>
+### What did I learn?
 
-### What about videos?
+While working on the Woolies Shop project I began to solidify my knowledge as an iOS Engineer, building up my confidence in how to work well on a team. Working alongside 5 other engineers, I learned how to take a flexible and open minded approach to writing code. I contributed to a shared style guide, encouraged everyone to define a set of best practices throughout our souce code and participated in retrospectives and sprint planning meetings, helping us to communicate effectively and work in clearly defined sprint cycles to continually deliver high quality code. 
 
-Videos are an awesome way to show off your work in a more engaging and personal way, and we’ve made sure they work great on our themes. Just paste an embed code from YouTube or Vimeo, and the theme makes sure it displays perfectly:
+Most importantly, being on this team taught me the importance of Code Review. I learnt to be deliberate about writing descriptions, communicating clearly about the changes being made and the context around them. I learned to be meticulous about reviewing team member's work and encouraging them to iterate and improve. It taught me the long term value this provides when maintaining a large codebase and trying to understand the historical reasons for decisions that were made.
 
-<iframe src="https://player.vimeo.com/video/148003889" width="640" height="360" frameborder="0" allowfullscreen></iframe>
-
----
-
-## Pretty cool, huh?
-
-We've packed this theme with powerful features to show off your work.
-
-Why not put them to use on your new portfolio?
-
-<a href="https://jekyllthemes.io/theme/duet-portfolio-jekyll-theme" class="button button--large">Get This Theme</a>
