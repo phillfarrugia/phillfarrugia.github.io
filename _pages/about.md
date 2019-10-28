@@ -19,6 +19,3 @@ When not writing software, I'm [shooting photos](https://instagram.com/phillfarr
 I've given [talks](https://github.com/phillfarrugia/talks) at local iOS meetups in Sydney, Melbourne and San Francisco. Talking about the ways people work in teams, challenging the assumptions people make about the process of building products and sharing my experiences with others as much as possible.
 
 I'm the organizer of a local San Francisco based Product Design meetup called [Product Of SFO](https://www.meetup.com/Product-Of-SFO/). We gather together regularly to drink coffee, provide feedback on side projects, discuss aspects of design in practice and to create a small community of diverse people.
-
-<br>
-<center><a href="https://www.dropbox.com/s/0plinavmzmpo9wq/2018_Resume_Phill_Farrugia.pdf?dl=0" class="button button--large">Download my Resume</a></center>
