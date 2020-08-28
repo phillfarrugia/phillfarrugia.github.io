@@ -6,7 +6,7 @@ collections:
     permalink: /:name
   posts:
     output: true
-    permalink: /blog/:slug
+    permalink: /photos/:slug
   projects:
     output: true
     permalink: /project/:slug
@@ -50,7 +50,7 @@ plugins:
   - jekyll-sitemap
 
 paginate: 6
-paginate_path: "/blog/page:num/"
+paginate_path: "/photos/page:num/"
 
 gallery_types:
   carousel: Carousel
