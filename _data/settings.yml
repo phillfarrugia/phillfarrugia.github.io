@@ -8,8 +8,6 @@ header_settings:
 
 menu_settings:
   menu_items:
-    - title: 'Photos'
-      url: '/photos/'
     - title: 'About'
       url: '/about'
 
@@ -29,6 +27,7 @@ contact_settings:
   send_button_text: 'Send Message'
 
 social_settings:
+  mastodon_url: 'https://mastodon.online/@phillfarrugia'
   facebook_url: ''
   twitter_url: 'https://twitter.com/phillfarrugia'
   instagram_url: 'http://instagram.com/phillfarrugia'
