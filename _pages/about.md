@@ -1,10 +1,10 @@
 ---
 title: About Me
 subtitle: I'm a Software Engineer, Writer and Photographer based in San Francisco, California
-featured_image: /images/about-me-small.jpg
+featured_image: /images/about-me.jpg
 ---
 
-![](/images/about-me-small.jpg)
+![](/images/about-me.jpg){:width="30%"}
 
 My name is Phill, I'm a Software Engineer born in Sydney, Australia. I love building human-centered products that are carefully crafted, delightful to use and enrich the lives of the people that use them.
 
