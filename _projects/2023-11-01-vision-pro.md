@@ -1,12 +1,12 @@
 ---
 title: 'Apple'
-subtitle: 'Camera & Photos Apps <br>2020-2023'
+subtitle: 'Vision Pro <br>2023-Present'
 date: 2018-06-30 00:00:00
 description: This page is a demo that shows everything you can do inside portfolio and blog posts.
-featured_image: '/images/photos.png'
+featured_image: '/images/visionos.png'
 ---
 
-![](/images/photos.png)
+![](/images/visionos.png)
 
 ## This work is protected
 
