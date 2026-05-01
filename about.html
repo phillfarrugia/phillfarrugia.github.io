@@ -22,6 +22,10 @@
             font-weight: 600;
             font-display: swap;
         }
+        @view-transition {
+            navigation: auto;
+        }
+
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -80,9 +84,8 @@
             width: 100%;
             z-index: 100;
             background: var(--bg);
-        }
-
-        .nav-name {
+            view-transition-name: header;
+        }        .nav-name {
             font-family: 'Baskervville', Baskerville, 'EB Garamond', Garamond, serif;
             font-size: 1.9rem;
             font-weight: 600;
@@ -131,6 +134,30 @@
             display: flex;
             justify-content: center;
             padding: 220px 48px 60px;
+            view-transition-name: content;
+        }
+
+        ::view-transition-old(content) {
+            animation: fade-out 0.2s ease forwards;
+        }
+
+        ::view-transition-new(content) {
+            animation: fade-in 0.3s ease forwards;
+        }
+
+        ::view-transition-old(header),
+        ::view-transition-new(header) {
+            animation: none;
+        }
+
+        @keyframes fade-out {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-8px); }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .about-content {
