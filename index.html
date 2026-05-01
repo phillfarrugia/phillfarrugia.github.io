@@ -451,26 +451,25 @@
             }
 
             .font-size-widget {
-                bottom: 20px;
-                right: 50%;
-                transform: translateX(50%);
+                position: static;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 32px;
+            }
+
+            .font-size-popover {
+                position: static;
+                margin-bottom: 8px;
             }
 
             footer {
-                padding: 24px 24px 60px;
+                padding: 24px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="font-size-widget" id="fontWidget">
-        <div class="font-size-popover">
-            <button class="font-size-btn font-size-btn-small" onclick="adjustFontSize(-1)" aria-label="Decrease font size">A</button>
-            <button class="font-size-btn font-size-btn-reset" onclick="resetFontSize()" aria-label="Reset font size">Reset</button>
-            <button class="font-size-btn font-size-btn-large" onclick="adjustFontSize(1)" aria-label="Increase font size">A</button>
-        </div>
-        <button class="font-size-trigger" onclick="toggleFontWidget()" aria-label="Font size">Aa</button>
-    </div>
 
     <nav>
         <a href="index.html" class="nav-name">Phill Farrugia</a>
@@ -638,6 +637,15 @@
 
         </div>
     </main>
+
+    <div class="font-size-widget" id="fontWidget">
+        <div class="font-size-popover">
+            <button class="font-size-btn font-size-btn-small" onclick="adjustFontSize(-1)" aria-label="Decrease font size">A</button>
+            <button class="font-size-btn font-size-btn-reset" onclick="resetFontSize()" aria-label="Reset font size">Reset</button>
+            <button class="font-size-btn font-size-btn-large" onclick="adjustFontSize(1)" aria-label="Increase font size">A</button>
+        </div>
+        <button class="font-size-trigger" onclick="toggleFontWidget()" aria-label="Font size">Aa</button>
+    </div>
 
     <footer>
         &copy; <span id="year"></span> Phill Farrugia
