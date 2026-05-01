@@ -1,47 +1,641 @@
----
-layout: default
-title: Work
-description: Software Engineer, Writer and Photographer based in San Francisco, California.
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phill Farrugia</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Baskervville';
+            src: url('fonts/Baskervville-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
 
-<section class="intro">
+        @font-face {
+            font-family: 'Baskervville';
+            src: url('fonts/Baskervville-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-display: swap;
+        }
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-	<div class="wrap">
+        :root {
+            --bg: #fafaf8;
+            --text: #3d3d3d;
+            --text-mid: #6e6e6e;
+            --text-light: #9a9a9a;
+            --dot: #d0d0cd;
+            --line: #e4e4e0;
+            --nav-bg: rgba(250, 250, 248, 0.8);
+            --shadow: rgba(0, 0, 0, 0.06);
+            --footer: #bfbfba;
+        }
 
-		<h1>Software Engineer, Writer and Photographer<br>based in San Francisco, California.</h1>
-		<p>I'm passionate about building human-centered products, taking photographs, exploring the world and constantly learning.</p>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1a1a1a;
+                --text: #e0e0de;
+                --text-mid: #a0a0a0;
+                --text-light: #707070;
+                --dot: #505050;
+                --line: #2e2e2e;
+                --nav-bg: rgba(26, 26, 26, 0.8);
+                --shadow: rgba(0, 0, 0, 0.2);
+                --footer: #484848;
+            }
+        }
 
-	</div>
+        html {
+            font-size: 16px;
+        }
 
-</section>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-<section class="portfolio">
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 36px 24px 36px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 100;
+            background: var(--bg);
+        }        .nav-name {
+            font-family: 'Baskervville', Baskerville, 'EB Garamond', Garamond, serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--text);
+        }
 
-	<div class="content-wrap portfolio-wrap">
+        .nav-bio {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-top: 4px;
+            letter-spacing: -0.01em;
+        }
 
-		{% for project in site.projects reversed %}
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            margin-top: 20px;
+        }
 
-		<div class="portfolio-item">
+        .nav-links a {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-			<a class="portfolio-item__link" href="{{ project.url }}">
+        .nav-links a:hover {
+            background: var(--line);
+            color: var(--text);
+        }
 
-				<div class="portfolio-item__image">
-					<img src="{{ project.featured_image  }}" alt="{{ project.title }}">
-				</div>
+        .nav-links a.active {
+            background: var(--line);
+            color: var(--text);
+        }
 
-				<div class="portfolio-item__content">
-					<div class="portfolio-item__info">
-						<h2 class="portfolio-item__title">{{ project.title }}</h2>
-						<p class="portfolio-item__subtitle">{{ project.subtitle }}</p>
-					</div>
-				</div>
+        .font-size-widget {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 101;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            user-select: none;
+        }
 
-			</a>
+        .font-size-trigger {
+            background: none;
+            border: 1px solid var(--line);
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 7px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            letter-spacing: 0.01em;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            line-height: 1;
+        }
 
-		</div>
+        .font-size-trigger:hover,
+        .font-size-widget.open .font-size-trigger {
+            background: var(--line);
+            color: var(--text);
+            border-color: transparent;
+        }
 
-		{% endfor %}
+        .font-size-popover {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            right: 0;
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(4px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
 
-	</div>
+        .font-size-widget.open .font-size-popover {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
 
-</section>
+        .font-size-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.2s ease, color 0.2s ease;
+            line-height: 1;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .font-size-btn:hover {
+            background: var(--line);
+            color: var(--text);
+        }
+
+        .font-size-btn-small {
+            font-size: 0.7rem;
+        }
+
+        .font-size-btn-reset {
+            font-size: 0.72rem;
+        }
+
+        .font-size-btn-large {
+            font-size: 1rem;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 220px 48px 60px;
+        }
+
+        .timeline {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            bottom: 8px;
+            left: 6px;
+            width: 1px;
+            background: var(--line);
+            border-radius: 1px;
+        }
+
+        .company {
+            position: relative;
+            padding-bottom: 48px;
+        }
+
+        .company:last-child {
+            padding-bottom: 0;
+        }
+
+        .company-dot {
+            position: absolute;
+            left: -32px;
+            top: 14px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--line);
+            transform: translateX(calc(-50% + 7px));
+        }
+
+        .company-header {
+            margin-bottom: 6px;
+        }
+
+        .company-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .company-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .company-role {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+
+        .company-years {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-left: auto;
+        }
+
+        .company-meta-sep {
+            display: none;
+        }
+
+        .products {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .product {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .product-icon-wrap {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 1px 6px var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .product-icon-wrap:hover {
+            transform: scale(1.08);
+        }
+
+        .product-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-icon-wrap.zoomed .product-icon {
+            transform: scale(1.5);
+        }
+
+        .product-icon-wrap.zoomed-less .product-icon {
+            transform: scale(1.2);
+        }
+
+        .product-icon-wrap.zoomed-more .product-icon {
+            transform: scale(1.5);
+        }
+
+        .product-text {
+            padding-top: 2px;
+        }
+
+        .product-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            margin-bottom: 2px;
+        }
+
+        .product-description {
+            font-size: 0.88rem;
+            font-weight: 400;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .company.current .company-dot {
+            background: var(--text);
+        }
+
+        .current-badge {
+            font-size: 0.58rem;
+            font-weight: 500;
+            color: var(--text-mid);
+            background: var(--line);
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.02em;
+        }
+
+        .company.current .company-name {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 48px;
+            font-size: 0.65rem;
+            font-weight: 300;
+            color: var(--footer);
+            letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 20px 24px;
+                max-width: 100%;
+            }
+
+            main {
+                padding: 130px 24px 60px;
+            }
+
+            .timeline {
+                padding-left: 28px;
+            }
+
+            .timeline::before {
+                left: 5px;
+            }
+
+            .company-dot {
+                left: -28px;
+            }
+
+            .company {
+                padding-bottom: 36px;
+            }
+
+            .company-meta {
+                flex-wrap: wrap;
+            }
+
+            .company-years {
+                margin-left: 0;
+            }
+
+            .font-size-widget {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            footer {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="font-size-widget" id="fontWidget">
+        <div class="font-size-popover">
+            <button class="font-size-btn font-size-btn-small" onclick="adjustFontSize(-1)" aria-label="Decrease font size">A</button>
+            <button class="font-size-btn font-size-btn-reset" onclick="resetFontSize()" aria-label="Reset font size">Reset</button>
+            <button class="font-size-btn font-size-btn-large" onclick="adjustFontSize(1)" aria-label="Increase font size">A</button>
+        </div>
+        <button class="font-size-trigger" onclick="toggleFontWidget()" aria-label="Font size">Aa</button>
+    </div>
+
+    <nav>
+        <span class="nav-name">Phill Farrugia</span>
+        <span class="nav-bio">Senior Software Engineer in San Francisco, CA</span>
+        <div class="nav-links">
+            <a href="index.html" class="active">Work</a>
+            <a href="about.html">About</a>
+            <a href="photography.html">Photos</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="timeline">
+
+            <div class="company current">
+                <div class="company-dot"></div>
+                <div class="company-header">
+                    <div class="company-name">Apple <span class="current-badge">Current</span></div>
+                    <div class="company-meta">
+                        <span class="company-role">Senior Software Engineer</span>
+                        <span class="company-meta-sep">&middot;</span>
+                        <span class="company-years">2020 – Present</span>
+                    </div>
+                </div>
+                <div class="products">
+                    <div class="product">
+                        <div class="product-icon-wrap">
+                            <img class="product-icon" src="images/visionos.png" alt="Vision Pro">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">Vision Pro</p>
+                            <p class="product-description">Apple's spatial computing platform. Building core visionOS experiences.</p>
+                        </div>
+                    </div>
+                    <div class="product">
+                        <div class="product-icon-wrap zoomed-more">
+                            <img class="product-icon" src="images/photos.png" alt="Camera & Photos">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">Camera & Photos</p>
+                            <p class="product-description">System apps used by billions. Built library, metadata and actions features.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="company">
+                <div class="company-dot"></div>
+                <div class="company-header">
+                    <div class="company-name">AutoDesk</div>
+                    <div class="company-meta">
+                        <span class="company-role">Software Engineer</span>
+                        <span class="company-meta-sep">&middot;</span>
+                        <span class="company-years">2019 – 2020</span>
+                    </div>
+                </div>
+                <div class="products">
+                    <div class="product">
+                        <div class="product-icon-wrap zoomed">
+                            <img class="product-icon" src="images/plangrid.png" alt="PlanGrid">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">PlanGrid</p>
+                            <p class="product-description">Construction productivity platform. Rewrote core views to Swift, optimized media ingestion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="company">
+                <div class="company-dot"></div>
+                <div class="company-header">
+                    <div class="company-name">Prolific Interactive</div>
+                    <div class="company-meta">
+                        <span class="company-role">Software Engineer</span>
+                        <span class="company-meta-sep">&middot;</span>
+                        <span class="company-years">2017 – 2019</span>
+                    </div>
+                </div>
+                <div class="products">
+                    <div class="product">
+                        <div class="product-icon-wrap zoomed">
+                            <img class="product-icon" src="images/gap.png" alt="Gap Inc.">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">Gap Inc.</p>
+                            <p class="product-description">eCommerce apps for six clothing brands. Built performance benchmarking and shared frameworks.</p>
+                        </div>
+                    </div>
+                    <div class="product">
+                        <div class="product-icon-wrap zoomed">
+                            <img class="product-icon" src="images/sephora.png" alt="Sephora">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">Sephora</p>
+                            <p class="product-description">Beauty eCommerce app. Built skin color matching technology.</p>
+                        </div>
+                    </div>
+                    <div class="product">
+                        <div class="product-icon-wrap zoomed-less">
+                            <img class="product-icon" src="images/beautycounter.png" alt="BeautyCounter">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">BeautyCounter</p>
+                            <p class="product-description">eCommerce for 40,000+ beauty consultants. Led product catalog and checkout.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="company">
+                <div class="company-dot"></div>
+                <div class="company-header">
+                    <div class="company-name">Bilue</div>
+                    <div class="company-meta">
+                        <span class="company-role">Software Engineer</span>
+                        <span class="company-meta-sep">&middot;</span>
+                        <span class="company-years">2015 – 2017</span>
+                    </div>
+                </div>
+                <div class="products">
+                    <div class="product">
+                        <div class="product-icon-wrap zoomed-more">
+                            <img class="product-icon" src="images/woolworths-money-2.png" alt="Woolworths Money">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">Woolworths Money</p>
+                            <p class="product-description">Credit card management app. Built wallet-style card UI and radial navigation.</p>
+                        </div>
+                    </div>
+                    <div class="product">
+                        <div class="product-icon-wrap zoomed">
+                            <img class="product-icon" src="images/woolies-shop.png" alt="Woolworths Shop">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">Woolworths Shop</p>
+                            <p class="product-description">Grocery eCommerce app. Built one of Australia's first Apple Watch apps.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="company">
+                <div class="company-dot"></div>
+                <div class="company-header">
+                    <div class="company-name">Network Ten</div>
+                    <div class="company-meta">
+                        <span class="company-role">Junior Software Engineer</span>
+                        <span class="company-meta-sep">&middot;</span>
+                        <span class="company-years">2013 – 2015</span>
+                    </div>
+                </div>
+                <div class="products">
+                    <div class="product">
+                        <div class="product-icon-wrap">
+                            <img class="product-icon" src="images/tenplay-thumbnail.png" alt="TENplay">
+                        </div>
+                        <div class="product-text">
+                            <p class="product-name">TENplay</p>
+                            <p class="product-description">Video streaming across iOS, Apple TV, and Web. Built Australia's first TVML Apple TV app.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; <span id="year"></span> Phill Farrugia
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const root = document.documentElement;
+        const widget = document.getElementById('fontWidget');
+        const sizes = [14, 16, 18, 20];
+        let sizeIndex = 1;
+
+        function toggleFontWidget() {
+            widget.classList.toggle('open');
+        }
+
+        function adjustFontSize(dir) {
+            sizeIndex = Math.max(0, Math.min(sizes.length - 1, sizeIndex + dir));
+            root.style.fontSize = sizes[sizeIndex] + 'px';
+        }
+
+        function resetFontSize() {
+            sizeIndex = 1;
+            root.style.fontSize = '16px';
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!widget.contains(e.target)) {
+                widget.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
