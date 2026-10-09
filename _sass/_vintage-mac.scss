@@ -1,0 +1,264 @@
+// -----------------------------------------------------------------------------
+// Vintage Macintosh UI Styles
+// -----------------------------------------------------------------------------
+
+// Classic Mac Window Chrome
+.mac-window {
+  background-color: $background-color;
+  border: 2px solid $text-dark-color;
+  box-shadow: 1px 1px 0 $text-dark-color;
+  
+  &__titlebar {
+    background: linear-gradient(to bottom, #FFFFFF 0%, #C0C0C0 100%);
+    border-bottom: 1px solid $text-dark-color;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      height: 1px;
+      background: repeating-linear-gradient(
+        to right,
+        $text-dark-color 0,
+        $text-dark-color 1px,
+        transparent 1px,
+        transparent 2px
+      );
+    }
+  }
+  
+  &__title {
+    font-family: $title-font;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  &__close {
+    width: 12px;
+    height: 12px;
+    border: 1px solid $text-dark-color;
+    background: $background-color;
+    position: absolute;
+    left: 8px;
+    
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 1px;
+      background: $text-dark-color;
+      top: 5px;
+      left: 2px;
+    }
+  }
+}
+
+// Classic Mac Button Styles
+.button {
+  background-color: $background-color;
+  border: 2px solid $text-dark-color;
+  box-shadow: 1px 1px 0 $text-dark-color;
+  border-radius: 0;
+  font-family: $title-font;
+  padding: 8px 20px;
+  transition: all 0.1s ease;
+  
+  &:hover {
+    background-color: $text-dark-color;
+    color: $background-color;
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 $text-dark-color;
+  }
+  
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: inset 1px 1px 0 $text-dark-color;
+  }
+  
+  &--primary {
+    border-width: 3px;
+    font-weight: bold;
+  }
+}
+
+// Classic Mac Form Elements
+input[type="text"],
+input[type="email"],
+textarea,
+.contact-form__input,
+.contact-form__textarea {
+  background-color: #FFFFFF;
+  border: 1px solid $text-dark-color;
+  box-shadow: inset 1px 1px 0 $text-medium-color;
+  border-radius: 0;
+  font-family: $body-font;
+  padding: 6px 8px;
+  
+  &:focus {
+    outline: 2px solid $text-dark-color;
+    outline-offset: -2px;
+  }
+}
+
+// Classic Mac Radio Buttons and Checkboxes
+input[type="radio"],
+input[type="checkbox"] {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border: 1px solid $text-dark-color;
+  background: #FFFFFF;
+  position: relative;
+  margin-right: 6px;
+  
+  &:checked::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: $text-dark-color;
+    top: 2px;
+    left: 2px;
+  }
+}
+
+input[type="radio"] {
+  border-radius: 50%;
+  
+  &:checked::after {
+    border-radius: 50%;
+  }
+}
+
+// Classic Mac Scrollbar
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: $background-color;
+  border: 1px solid $text-dark-color;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $background-color;
+  border: 1px solid $text-dark-color;
+  box-shadow: inset 1px 1px 0 #FFFFFF;
+}
+
+::-webkit-scrollbar-button {
+  background: $background-color;
+  border: 1px solid $text-dark-color;
+  width: 16px;
+  height: 16px;
+}
+
+// Desktop Pattern Background
+.desktop-pattern {
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+}
+
+// Classic Mac Menu Bar
+.header {
+  background: linear-gradient(to bottom, #FFFFFF 0%, #C0C0C0 100%);
+  border-bottom: 2px solid $text-dark-color;
+  box-shadow: 0 1px 0 #FFFFFF;
+  
+  .menu {
+    &__item {
+      font-family: $title-font;
+      font-size: 14px;
+      padding: 0 16px;
+      
+      &:hover {
+        background: $text-dark-color;
+        color: $background-color;
+      }
+    }
+  }
+}
+
+// Classic Mac Alert/Dialog Box
+.mac-alert {
+  background: $background-color;
+  border: 3px solid $text-dark-color;
+  box-shadow: 2px 2px 0 $text-dark-color;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  
+  &__title {
+    font-family: $title-font;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  &__content {
+    font-family: $body-font;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+}
+
+// Vintage Mac Grid Overlay
+.portfolio__item,
+.blog__item {
+  border: 1px solid $text-dark-color;
+  box-shadow: 1px 1px 0 $text-dark-color;
+  
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 $text-dark-color;
+  }
+}
+
+// System Font for Code
+pre, code {
+  font-family: Monaco, "Courier New", Courier, monospace;
+  background: #FFFFFF;
+  border: 1px solid $text-dark-color;
+  padding: 2px 4px;
+}
+
+pre {
+  padding: 12px;
+  overflow: auto;
+}
+
+// Classic Mac Beveled Borders
+.bevel-inset {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #808080 #FFFFFF #FFFFFF #808080;
+}
+
+.bevel-outset {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #FFFFFF #808080 #808080 #FFFFFF;
+}

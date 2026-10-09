@@ -4,52 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-### Development
+GitHub Pages builds with Ruby 3.3. The `github-pages` gem does not support Ruby 4, and macOS's system Ruby (2.6) is too old, so use Homebrew's `ruby@3.3`:
+
 ```bash
-# Install dependencies
-bundle install
-
-# Run development server (accessible at http://localhost:4000)
-jekyll serve
-
-# Build the site for production
-jekyll build
+export PATH=/opt/homebrew/opt/ruby@3.3/bin:$PATH
+bundle install                          # gems install to vendor/bundle
+bundle exec jekyll serve --drafts       # http://localhost:4000, includes _drafts/
 ```
+
+Restart `jekyll serve` after editing `_config.yml`, because it isn't reloaded automatically.
 
 ## Architecture Overview
 
-This is a Jekyll-based personal portfolio website using the Duet theme. Jekyll is a static site generator that converts markdown and templates into a complete website.
+GitHub Pages runs Jekyll on every push to `master` (custom domain via `CNAME`).
 
-### Key Concepts
+**Hand-written pages**: `index.html` (Work), `about.html` and `photography.html` have no front matter, so Jekyll copies them through untouched. Each one is self-contained with inline CSS and JS. Shared styles such as fonts, colours, nav and view transitions are duplicated in each page and in `_layouts/base.html`, so update all four when you change shared UI. The nav links also need updating in all four places (the blog's nav is `_includes/nav.html`).
 
-**Collections** - Jekyll collections are used to organize content:
-- `_projects/` - Portfolio projects with front matter containing title, subtitle, date, and featured_image
-- `_posts/` - Blog posts following Jekyll's naming convention (YYYY-MM-DD-title.md)
-- `_pages/` - Static pages like About and Contact
+**Blog** (`/blog`):
+- `_posts/YYYY-MM-DD-slug.md` - Published at `/blog/slug/` and use the `post` layout by default
+- `_drafts/` - Unpublished posts (shown locally with `--drafts`)
+- `blog/index.html` - Post list
+- `_layouts/base.html` - Blog page shell and all blog CSS
+- `_layouts/post.html` - Single post template
+- `_includes/` - Shared blog partials such as the nav and reading time
+- RSS is generated at `/blog/feed.xml` by `jekyll-feed`
+- `README.md` has the post-writing guide
 
-**Layouts & Includes** - Templates that define page structure:
-- `_layouts/` - Page templates (default, project, post, page)
-- `_includes/` - Reusable components (header, footer, contact-form, socials)
+**Assets**: `images/` (thumbnails, favicon, about photo), `images/photos/` (full-size photos opened in the lightbox via `data-full`), `images/photos/thumbs/` (grid thumbnails) and `fonts/` (self-hosted Baskervville; EB Garamond comes from Google Fonts).
 
-**Data Files** - Configuration separated from code:
-- `_data/settings.yml` - Theme customization, navigation, colors, typography
-- `_config.yml` - Jekyll configuration and build settings
-
-**Styling** - Sass-based architecture:
-- `_sass/` - Modular stylesheets with component-specific styles in `_includes/`
-- `css/style.scss` - Main entry point that imports all Sass partials
-
-### Development Workflow
-
-1. **Adding Projects**: Create markdown files in `_projects/` with required front matter (title, subtitle, date, featured_image)
-2. **Blog Posts**: Add to `_posts/` following Jekyll naming convention
-3. **Styling Changes**: Edit Sass files in `_sass/`, changes compile automatically
-4. **Theme Settings**: Modify `_data/settings.yml` for colors, fonts, navigation
-5. **Contact Form**: Uses Formspree service, configured in settings.yml
-
-### Important Features
-
-- **Ajax Loading**: Enabled by default for smooth page transitions (can be disabled in settings.yml)
-- **Responsive Grid**: Configurable spacing and overlay opacity for portfolio items
-- **Custom Domain**: Configured via CNAME file for GitHub Pages deployment
-- **Syntax Highlighting**: Uses Rouge highlighter for code blocks
+**UI convention**: images scale up slightly on hover with `transition: transform 0.3s ease`, matching the Work page icons (`1.08` at 50px). Scale larger images by less so the growth stays subtle: `1.03` for the photo grid and `1.015` for full-width images.

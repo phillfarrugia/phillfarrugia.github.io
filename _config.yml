@@ -1,0 +1,38 @@
+# Jekyll config — GitHub Pages builds the blog from this.
+# The existing pages (index.html, about.html, photography.html) have no
+# front matter, so Jekyll copies them through untouched.
+
+title: Phill Farrugia
+description: Senior Software Engineer in San Francisco, CA
+url: https://phillfarrugia.com
+author: Phill Farrugia
+timezone: America/Los_Angeles
+
+# Posts live in _posts/YYYY-MM-DD-slug.md and are published at /blog/slug/
+permalink: /blog/:title/
+excerpt_separator: "<!--more-->"
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+plugins:
+  - jekyll-feed
+
+feed:
+  path: blog/feed.xml
+
+exclude:
+  - README.md
+  - CLAUDE.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

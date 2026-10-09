@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description | strip_html | strip }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description | strip_html | strip }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">
+    <meta name="twitter:card" content="summary_large_image">{% endif %}
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    {% feed_meta %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- Shared site styles (same as index/about/photography) ---------- */
+
+        @font-face {
+            font-family: 'Baskervville';
+            src: url('/fonts/Baskervville-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Baskervville';
+            src: url('/fonts/Baskervville-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-display: swap;
+        }
+
+        @view-transition {
+            navigation: auto;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafaf8;
+            --text: #3d3d3d;
+            --text-mid: #6e6e6e;
+            --text-light: #9a9a9a;
+            --dot: #d0d0cd;
+            --line: #e4e4e0;
+            --nav-bg: rgba(250, 250, 248, 0.8);
+            --shadow: rgba(0, 0, 0, 0.06);
+            --footer: #bfbfba;
+            --code-bg: #f1f1ee;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1a1a1a;
+                --text: #e0e0de;
+                --text-mid: #a0a0a0;
+                --text-light: #707070;
+                --dot: #505050;
+                --line: #2e2e2e;
+                --nav-bg: rgba(26, 26, 26, 0.8);
+                --shadow: rgba(0, 0, 0, 0.2);
+                --footer: #484848;
+                --code-bg: #232323;
+            }
+        }
+
+        html { font-size: 16px; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 36px 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 100;
+            background: var(--bg);
+            view-transition-name: header;
+        }
+
+        .nav-name {
+            font-family: 'Baskervville', Baskerville, 'EB Garamond', Garamond, serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-bio {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-top: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            margin-top: 20px;
+        }
+
+        .nav-links a {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--line);
+            color: var(--text);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 220px 48px 60px;
+            view-transition-name: content;
+        }
+
+        ::view-transition-old(content) {
+            animation: fade-out 0.2s ease forwards;
+        }
+
+        ::view-transition-new(content) {
+            animation: fade-in 0.3s ease forwards;
+        }
+
+        ::view-transition-old(header),
+        ::view-transition-new(header) {
+            animation: none;
+        }
+
+        @keyframes fade-out {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-8px); }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 48px;
+            font-size: 0.65rem;
+            font-weight: 300;
+            color: var(--footer);
+            letter-spacing: 0.02em;
+        }
+
+        /* ---------- Blog list ---------- */
+
+        .post-list {
+            width: 100%;
+            max-width: 560px;
+            align-self: flex-start;
+        }
+
+        .post-item {
+            display: block;
+            padding-bottom: 40px;
+            text-decoration: none;
+        }
+
+        .post-item:last-of-type {
+            padding-bottom: 0;
+        }
+
+        .post-item:hover .post-item-title {
+            color: var(--text-mid);
+        }
+
+        .post-item-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .post-item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            line-height: 1.35;
+            transition: color 0.3s ease;
+        }
+
+        .post-item-date {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .post-item-description {
+            font-size: 0.88rem;
+            font-weight: 400;
+            color: var(--text-light);
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+
+        .blog-feed {
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .blog-feed a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .blog-feed a:hover {
+            color: var(--text);
+        }
+
+        .blog-empty {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        /* ---------- Single post ---------- */
+
+        .post {
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .post-header {
+            margin-bottom: 36px;
+        }
+
+        .post-title {
+            font-family: 'Baskervville', Baskerville, 'EB Garamond', Garamond, serif;
+            font-size: 2.1rem;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text);
+        }
+
+        .post-meta {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .post-body {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: var(--text-mid);
+        }
+
+        .post-body > * + * {
+            margin-top: 18px;
+        }
+
+        .post-body h2,
+        .post-body h3 {
+            font-family: 'Baskervville', Baskerville, 'EB Garamond', Garamond, serif;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .post-body h2 {
+            font-size: 1.6rem;
+            margin-top: 44px;
+        }
+
+        .post-body h3 {
+            font-size: 1.3rem;
+            margin-top: 32px;
+        }
+
+        .post-body h2 + *,
+        .post-body h3 + * {
+            margin-top: 10px;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body a {
+            color: var(--text);
+            text-decoration: underline;
+            text-decoration-color: var(--dot);
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+            transition: text-decoration-color 0.3s ease;
+        }
+
+        .post-body a:hover {
+            text-decoration-color: var(--text);
+        }
+
+        .post-body ul,
+        .post-body ol {
+            padding-left: 22px;
+        }
+
+        .post-body li + li {
+            margin-top: 6px;
+        }
+
+        .post-body li::marker {
+            color: var(--text-light);
+        }
+
+        .post-body blockquote {
+            margin-top: 28px;
+            margin-bottom: 28px;
+            padding-left: 22px;
+            border-left: 1px solid var(--dot);
+            font-family: 'Baskervville', Baskerville, 'EB Garamond', Garamond, serif;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .post-body hr {
+            border: 0;
+            height: 1px;
+            background: var(--line);
+            margin: 40px 0;
+        }
+
+        .post-body img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .post-body img:hover {
+            transform: scale(1.015);
+        }
+
+        /* Caption: an italic line directly after an image */
+        .post-body img + em {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            font-style: normal;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .post-body code {
+            font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+            font-size: 0.85em;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 5px;
+            color: var(--text);
+        }
+
+        .post-body pre {
+            background: var(--code-bg);
+            border-radius: 12px;
+            padding: 18px 20px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .post-body pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.82rem;
+        }
+
+        .post-body .highlighter-rouge + .highlighter-rouge,
+        .post-body div.highlighter-rouge {
+            margin-top: 22px;
+        }
+
+        /* Syntax colours — quiet, greyscale-leaning to suit the site */
+        .highlight .c, .highlight .c1, .highlight .cm, .highlight .cs { color: var(--text-light); font-style: italic; }
+        .highlight .k, .highlight .kd, .highlight .kn, .highlight .kr, .highlight .kt, .highlight .kc { color: #a0526a; }
+        .highlight .s, .highlight .s1, .highlight .s2, .highlight .sr, .highlight .sh { color: #5f7f4f; }
+        .highlight .m, .highlight .mi, .highlight .mf, .highlight .mh { color: #9a6b2f; }
+        .highlight .nc, .highlight .nf, .highlight .nb, .highlight .nt { color: #4a6b8a; }
+        .highlight .na, .highlight .nv, .highlight .py { color: var(--text); }
+        @media (prefers-color-scheme: dark) {
+            .highlight .k, .highlight .kd, .highlight .kn, .highlight .kr, .highlight .kt, .highlight .kc { color: #d48aa0; }
+            .highlight .s, .highlight .s1, .highlight .s2, .highlight .sr, .highlight .sh { color: #9cbc8a; }
+            .highlight .m, .highlight .mi, .highlight .mf, .highlight .mh { color: #d1a46a; }
+            .highlight .nc, .highlight .nf, .highlight .nb, .highlight .nt { color: #8fb2d4; }
+        }
+
+        .post-footer {
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--line);
+        }
+
+        .post-nav {
+            display: flex;
+            gap: 24px;
+            justify-content: space-between;
+        }
+
+        .post-nav a {
+            display: block;
+            max-width: 48%;
+            text-decoration: none;
+        }
+
+        .post-nav .next {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .post-nav-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .post-nav-title {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .post-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 36px;
+        }
+
+        .post-links a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .post-links a:hover {
+            color: var(--text);
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 20px 24px;
+                max-width: 100%;
+            }
+
+            main {
+                padding: 180px 24px 24px;
+            }
+
+            .post-item {
+                padding-bottom: 32px;
+            }
+
+            .post-item-header {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .post-item-date {
+                margin-left: 0;
+                order: -1;
+                font-size: 0.8rem;
+            }
+
+            .post-title {
+                font-size: 1.75rem;
+            }
+
+            footer {
+                padding: 8px 24px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+{% include nav.html %}
+
+    <main>
+{{ content }}
+    </main>
+
+    <footer>
+        &copy; <span id="year"></span> Phill Farrugia
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

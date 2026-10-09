@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photos – Phill Farrugia</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="alternate" type="application/atom+xml" title="Phill Farrugia" href="/blog/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
@@ -193,11 +194,11 @@
             border-radius: 8px;
             background: var(--line);
             cursor: pointer;
-            transition: opacity 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .photo-grid img:hover {
-            opacity: 0.85;
+            transform: scale(1.03);
         }
 
         .photo-placeholder {
@@ -213,7 +214,7 @@
             position: fixed;
             inset: 0;
             z-index: 200;
-            background: rgba(30, 30, 30, 0.95);
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
@@ -222,11 +223,39 @@
             display: flex;
         }
 
+        .lightbox-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(30, 30, 30, 0.95);
+        }
+
         .lightbox-img {
-            max-width: 85vw;
-            max-height: 85vh;
-            object-fit: contain;
-            border-radius: 8px;
+            position: relative;
+            object-fit: cover;
+            clip-path: inset(0 round 8px);
+            will-change: transform, clip-path;
+        }
+
+        .lightbox-meta {
+            position: relative;
+            margin-top: 16px;
+            padding: 0 24px;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .lightbox-meta-camera {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .lightbox-meta-exposure {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-variant-numeric: tabular-nums;
         }
 
         .lightbox-close {
@@ -310,6 +339,7 @@
         <div class="nav-links">
             <a href="index.html">Work</a>
             <a href="about.html">About</a>
+            <a href="blog/">Blog</a>
             <a href="photography.html" class="active">Photos</a>
         </div>
     </nav>
@@ -317,23 +347,32 @@
     <main>
         <div class="photos-content">
             <div class="photo-grid">
-                <img src="images/photos/thumbs/IMG_5080.jpg" data-full="images/photos/IMG_5080.jpg" alt="Photo">
-                <img src="images/photos/thumbs/IMG_9485.jpg" data-full="images/photos/IMG_9485.jpg" alt="Photo">
-                <img src="images/photos/thumbs/Z72_1609.jpg" data-full="images/photos/Z72_1609.jpg" alt="Photo">
-                <img src="images/photos/thumbs/Z72_1684.jpg" data-full="images/photos/Z72_1684.jpg" alt="Photo">
-                <img src="images/photos/thumbs/Z72_1869.jpg" data-full="images/photos/Z72_1869.jpg" alt="Photo">
-                <img src="images/photos/thumbs/Z72_1747.jpg" data-full="images/photos/Z72_1747.jpg" alt="Photo">
-                <img src="images/photos/thumbs/Z72_3194.jpg" data-full="images/photos/Z72_3194.jpg" alt="Photo">
-                <img src="images/photos/thumbs/Z72_6626.jpg" data-full="images/photos/Z72_6626.jpg" alt="Photo">
-                <img src="images/photos/thumbs/Z72_7564-Enhanced-NR.jpg" data-full="images/photos/Z72_7564-Enhanced-NR.jpg" alt="Photo">
+                <img src="images/photos/thumbs/IMG_5080.jpg" data-full="images/photos/IMG_5080.jpg" data-camera="iPhone 13 Pro" data-lens="Main Camera 26mm f/1.5" data-exposure="1/1377s" data-aperture="ƒ/1.5" data-iso="ISO 50" alt="Photo">
+                <img src="images/photos/thumbs/IMG_9485.jpg" data-full="images/photos/IMG_9485.jpg" data-camera="iPhone 12 Pro Max" data-lens="Main Camera 26mm f/1.6" data-exposure="1/1109s" data-aperture="ƒ/1.6" data-iso="ISO 32" alt="Photo">
+                <img src="images/photos/thumbs/Z72_1609.jpg" data-full="images/photos/Z72_1609.jpg" data-camera="Nikon Z7 II" data-lens="NIKKOR Z 24-200mm f/4-6.3 VR" data-exposure="1/10s" data-aperture="ƒ/14" data-iso="ISO 200" alt="Photo">
+                <img src="images/photos/thumbs/Z72_1684.jpg" data-full="images/photos/Z72_1684.jpg" data-camera="Nikon Z7 II" data-lens="NIKKOR Z 24-200mm f/4-6.3 VR" data-exposure="1/25s" data-aperture="ƒ/8" data-iso="ISO 2000" alt="Photo">
+                <img src="images/photos/thumbs/Z72_1869.jpg" data-full="images/photos/Z72_1869.jpg" data-camera="Nikon Z7 II" data-lens="NIKKOR Z 35mm f/1.8 S" data-exposure="1/2500s" data-aperture="ƒ/1.8" data-iso="ISO 100" alt="Photo">
+                <img src="images/photos/thumbs/Z72_1747.jpg" data-full="images/photos/Z72_1747.jpg" data-camera="Nikon Z7 II" data-lens="NIKKOR Z 35mm f/1.8 S" data-exposure="1/2000s" data-aperture="ƒ/1.8" data-iso="ISO 250" alt="Photo">
+                <img src="images/photos/thumbs/Z72_3194.jpg" data-full="images/photos/Z72_3194.jpg" data-camera="Nikon Z7 II" data-lens="NIKKOR Z 24-200mm f/4-6.3 VR" data-exposure="1/1250s" data-aperture="ƒ/6.3" data-iso="ISO 800" alt="Photo">
+                <img src="images/photos/thumbs/Z72_6626.jpg" data-full="images/photos/Z72_6626.jpg" data-camera="Nikon Z7 II" data-lens="NIKKOR Z 24-200mm f/4-6.3 VR" data-exposure="1/100s" data-aperture="ƒ/6.3" data-iso="ISO 800" alt="Photo">
+                <img src="images/photos/thumbs/Z72_7564-Enhanced-NR.jpg" data-full="images/photos/Z72_7564-Enhanced-NR.jpg" data-camera="Nikon Z7 II" data-lens="NIKKOR Z 24-200mm f/4-6.3 VR" data-exposure="1/400s" data-aperture="ƒ/8" data-iso="ISO 800" alt="Photo">
             </div>
         </div>
     </main>
 
     <div class="lightbox" id="lightbox">
+        <div class="lightbox-backdrop"></div>
         <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
         <button class="lightbox-arrow lightbox-prev" onclick="navigateLightbox(-1)" aria-label="Previous">&lsaquo;</button>
         <img class="lightbox-img" id="lightboxImg" src="" alt="">
+        <div class="lightbox-meta" id="lightboxMeta">
+            <div><span class="lightbox-meta-camera" data-field="camera"></span> &nbsp;&middot;&nbsp; <span data-field="lens"></span></div>
+            <div class="lightbox-meta-exposure">
+                <span data-field="exposure"></span>
+                <span data-field="aperture"></span>
+                <span data-field="iso"></span>
+            </div>
+        </div>
         <button class="lightbox-arrow lightbox-next" onclick="navigateLightbox(1)" aria-label="Next">&rsaquo;</button>
     </div>
 
@@ -346,26 +385,122 @@
 
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
+        const backdrop = lightbox.querySelector('.lightbox-backdrop');
+        const lightboxMeta = document.getElementById('lightboxMeta');
+        // Buttons and EXIF text fade in and out with the backdrop
+        const controls = [...lightbox.querySelectorAll('button'), lightboxMeta];
+        const photos = Array.from(document.querySelectorAll('.photo-grid img'));
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const easing = 'cubic-bezier(0.32, 0.72, 0, 1)';
         let currentIndex = 0;
-        let photos = [];
+        let animating = false;
+
+        // Size the lightbox image to fit 85vw x 85vh (less room for the EXIF text) at the photo's aspect ratio.
+        // Thumbnails keep the original aspect ratio, so this works before the full image loads.
+        function sizeLightboxImg(thumb) {
+            const aspect = thumb.naturalWidth / thumb.naturalHeight;
+            const metaSpace = lightboxMeta.offsetHeight + parseFloat(getComputedStyle(lightboxMeta).marginTop);
+            const maxW = window.innerWidth * 0.85;
+            const maxH = window.innerHeight * 0.85 - metaSpace;
+            const w = Math.min(maxW, maxH * aspect);
+            lightboxImg.style.width = w + 'px';
+            lightboxImg.style.height = (w / aspect) + 'px';
+        }
+
+        // Show the cached thumbnail straight away, then swap in the full image once decoded.
+        function showPhoto(index) {
+            photos[currentIndex].style.visibility = '';
+            currentIndex = index;
+            const thumb = photos[index];
+            thumb.style.visibility = 'hidden';
+            lightboxMeta.querySelectorAll('[data-field]').forEach(el => {
+                el.textContent = thumb.dataset[el.dataset.field];
+            });
+            sizeLightboxImg(thumb);
+            lightboxImg.src = thumb.src;
+
+            const full = new Image();
+            full.src = thumb.dataset.full;
+            full.decode().then(() => {
+                if (currentIndex === index && lightbox.classList.contains('open')) {
+                    lightboxImg.src = full.src;
+                }
+            }).catch(() => {});
+        }
+
+        // Keyframe that makes the lightbox image sit exactly over the thumbnail:
+        // scaled to cover the thumbnail's box, cropped to it, with matching corners.
+        function thumbKeyframe(thumb) {
+            const t = thumb.getBoundingClientRect();
+            const f = lightboxImg.getBoundingClientRect();
+            const scale = Math.max(t.width / f.width, t.height / f.height);
+            const dx = (t.left + t.width / 2) - (f.left + f.width / 2);
+            const dy = (t.top + t.height / 2) - (f.top + f.height / 2);
+            const insetX = (f.width - t.width / scale) / 2;
+            const insetY = (f.height - t.height / scale) / 2;
+            return {
+                transform: `translate(${dx}px, ${dy}px) scale(${scale})`,
+                clipPath: `inset(${insetY}px ${insetX}px round ${8 / scale}px)`
+            };
+        }
+
+        const openKeyframe = { transform: 'none', clipPath: 'inset(0px 0px round 8px)' };
+
+        function isInViewport(el) {
+            const r = el.getBoundingClientRect();
+            return r.bottom > 0 && r.top < window.innerHeight && r.right > 0 && r.left < window.innerWidth;
+        }
+
+        function fade(el, from, to, duration) {
+            return el.animate({ opacity: [from, to] }, { duration, easing: 'ease', fill: 'both' });
+        }
 
         document.querySelector('.photo-grid').addEventListener('click', (e) => {
             const img = e.target.closest('img');
-            if (!img) return;
-            photos = Array.from(document.querySelectorAll('.photo-grid img'));
-            currentIndex = photos.indexOf(img);
-            lightboxImg.src = img.dataset.full || img.src;
+            if (!img || animating) return;
             lightbox.classList.add('open');
+            showPhoto(photos.indexOf(img));
+
+            animating = true;
+            const duration = reduceMotion.matches ? 200 : 450;
+            fade(backdrop, 0, 1, duration);
+            controls.forEach(c => fade(c, 0, 1, duration));
+            const imgAnim = reduceMotion.matches
+                ? fade(lightboxImg, 0, 1, duration)
+                : lightboxImg.animate([thumbKeyframe(img), openKeyframe], { duration, easing });
+            imgAnim.finished.then(() => { animating = false; });
         });
 
         function closeLightbox() {
-            lightbox.classList.remove('open');
+            if (animating || !lightbox.classList.contains('open')) return;
+            animating = true;
+            const thumb = photos[currentIndex];
+            const flyBack = !reduceMotion.matches && isInViewport(thumb);
+            const duration = reduceMotion.matches ? 200 : 380;
+
+            fade(backdrop, 1, 0, duration);
+            controls.forEach(c => fade(c, 1, 0, duration * 0.6));
+            const imgAnim = flyBack
+                ? lightboxImg.animate([openKeyframe, thumbKeyframe(thumb)], { duration, easing, fill: 'forwards' })
+                : fade(lightboxImg, 1, 0, duration);
+
+            imgAnim.finished.then(() => {
+                thumb.style.visibility = '';
+                lightbox.classList.remove('open');
+                lightboxImg.getAnimations().forEach(a => a.cancel());
+                lightboxImg.removeAttribute('src');
+                animating = false;
+            });
         }
 
         function navigateLightbox(dir) {
-            currentIndex = (currentIndex + dir + photos.length) % photos.length;
-            lightboxImg.src = photos[currentIndex].dataset.full || photos[currentIndex].src;
+            if (animating) return;
+            showPhoto((currentIndex + dir + photos.length) % photos.length);
         }
+
+        window.addEventListener('resize', () => {
+            if (lightbox.classList.contains('open')) sizeLightboxImg(photos[currentIndex]);
+        });
 
         document.addEventListener('keydown', (e) => {
             if (!lightbox.classList.contains('open')) return;
@@ -374,9 +509,7 @@
             if (e.key === 'ArrowRight') navigateLightbox(1);
         });
 
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeLightbox();
-        });
+        backdrop.addEventListener('click', closeLightbox);
     </script>
 </body>
 </html>
