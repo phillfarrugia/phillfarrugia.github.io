@@ -33,6 +33,7 @@ feed:
 exclude:
   - README.md
   - CLAUDE.md
+  - scripts
   - Gemfile
   - Gemfile.lock
   - vendor

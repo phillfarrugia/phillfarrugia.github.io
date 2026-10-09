@@ -32,4 +32,6 @@ GitHub Pages runs Jekyll on every push to `master` (custom domain via `CNAME`).
 
 **Assets**: `images/` (thumbnails, favicon, about photo), `images/photos/` (full-size photos opened in the lightbox via `data-full`), `images/photos/thumbs/` (grid thumbnails) and `fonts/` (self-hosted Baskervville; EB Garamond comes from Google Fonts).
 
+**Photo EXIF**: each grid `<img>` in `photography.html` carries `data-camera`, `data-lens`, `data-exposure`, `data-aperture` and `data-iso`, which the photo viewer shows. Generate these with `python3 scripts/update-photo-exif.py` (needs `exiftool`) instead of writing them by hand. See README "Adding a photo".
+
 **UI convention**: images scale up slightly on hover with `transition: transform 0.3s ease`, matching the Work page icons (`1.08` at 50px). Scale larger images by less so the growth stays subtle: `1.03` for the photo grid and `1.015` for full-width images.

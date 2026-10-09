@@ -25,6 +25,28 @@ The main pages (`index.html`, `about.html`, `photography.html`) are plain HTML. 
 - **Drafts:** keep unfinished posts in `_drafts/` (no date in the filename). They aren't published.
 - **RSS:** generated at `/blog/feed.xml`.
 
+## Adding a photo
+
+1. Put the full-size JPEG in `images/photos/` and a thumbnail (longest side 800px) with the same filename in `images/photos/thumbs/`:
+
+   ```sh
+   sips -Z 800 images/photos/NEW.jpg --out images/photos/thumbs/NEW.jpg
+   ```
+
+2. Add it to the grid in `photography.html`:
+
+   ```html
+   <img src="images/photos/thumbs/NEW.jpg" data-full="images/photos/NEW.jpg" alt="Photo">
+   ```
+
+3. Fill in the camera, lens, exposure, aperture and ISO shown in the photo viewer (needs `brew install exiftool`):
+
+   ```sh
+   python3 scripts/update-photo-exif.py
+   ```
+
+   It updates every photo in the grid and is safe to re-run. To give a camera a friendlier name than its EXIF model, add it to `CAMERA_NAMES` in the script.
+
 ## Previewing locally (optional)
 
 ```sh
